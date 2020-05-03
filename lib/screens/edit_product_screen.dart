@@ -87,29 +87,39 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
     // если мы редактируем имеющийся продукт
     if (_editedProduct.id != null) {
-      await Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id, _editedProduct);
-    } else {
-      // добавляем новый продукт
       try {
-        await Provider.of<Products>(context, listen: false)
-            .addProduct(_editedProduct);
+        await Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id, _editedProduct);
       } catch (error) {
-        showDialog<Null>(context: context,
-            builder: (ctx) =>
-                AlertDialog(
-                  title: Text('Adding error occured!'),
+        showDialog<Null>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('Updating error occured!'),
                   content: Text(error.toString()),
                   actions: <Widget>[
                     FlatButton(child: Text('Okay'), onPressed: () => Navigator.pop(context)),
                   ],
                 ));
       }
+    } else {
+      // добавляем новый продукт
+      try {
+        await Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+      } catch (error) {
+        showDialog<Null>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: Text('Adding error occured!'),
+              content: Text(error.toString()),
+              actions: <Widget>[
+                FlatButton(child: Text('Okay'), onPressed: () => Navigator.pop(context)),
+              ],
+            ));
+      }
       // в обоих случаях отключаем индикатор загрузки и выходим
       setState(() {
         _isLoading = false;
       });
-      Navigator.pop(context);
+      Navigator.of(context).pop();
     }
   }
 

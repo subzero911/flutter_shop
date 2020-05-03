@@ -65,7 +65,6 @@ class Products with ChangeNotifier {
 
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    assert(prodIndex >= 0);
     if (prodIndex >= 0) {
       final url = 'https://fluttershop-4c03c.firebaseio.com/products/$id.json';
       try {
