@@ -115,12 +115,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ],
             ));
       }
-      // в обоих случаях отключаем индикатор загрузки и выходим
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
     }
+    // в обоих случаях отключаем индикатор загрузки и выходим
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
