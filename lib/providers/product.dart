@@ -1,0 +1,29 @@
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
+
+class Product with ChangeNotifier {
+  final String id;
+  final String title;
+  final String description;
+  final double price;
+  final String imageUrl;
+  bool isFavorite;
+
+  Product({
+    @required this.id,
+    @required this.title,
+    @required this.description,
+    @required this.price,
+    this.imageUrl,
+    this.isFavorite = false,
+  });
+
+  factory Product.from (Product p, {String id}) {
+    return Product(id: id, title: p.title, description: p.description, price: p.price, imageUrl: p.imageUrl);
+  }
+
+  void toggleFavoriteStatus() async {
+    isFavorite = !isFavorite;
+    notifyListeners();
+  }
+}
