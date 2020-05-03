@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_app/models/http_exception.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -22,8 +25,18 @@ class Product with ChangeNotifier {
     return Product(id: id, title: p.title, description: p.description, price: p.price, imageUrl: p.imageUrl);
   }
 
-  void toggleFavoriteStatus() async {
+  toggleFavoriteStatus() async {
+    final url = 'https://fluttershop-4c03c.firebaseio.com/products/$id.json';
     isFavorite = !isFavorite;
     notifyListeners();
+    final response = await http.patch(url, body: json.encode({
+        'isFavorite': isFavorite
+      }));
+    if (response.statusCode >= 400) {
+      // roll back changes
+      isFavorite = !isFavorite;
+      notifyListeners();
+      throw HttpException('Could not update favorite status');
+    }
   }
 }
