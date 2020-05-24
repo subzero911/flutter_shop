@@ -21,17 +21,18 @@ class OrderItem extends StatelessWidget {
         initialData: false,
         stream: _viewModel.expanded,
         builder: (context, snapshot) {
+          bool expanded = snapshot.data;
           return Column(
             children: <Widget>[
               ListTile(            
                 title: Text('\$${order.amount.toStringAsFixed(2)}'),
                 subtitle: Text(DateFormat('dd/MM/yyyy hh:mm').format(order.dateTime)),
                 trailing: IconButton(
-                  icon: Icon(snapshot.data == true ? Icons.expand_less : Icons.expand_more),
+                  icon: Icon(expanded ? Icons.expand_less : Icons.expand_more),
                   onPressed: _viewModel.onTilePressed,
                 ),
               ),
-              if (snapshot.data == true)
+              if (expanded)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                   height: min(order.products.length * 20.0 + 10, 100),
